@@ -1,0 +1,36 @@
+.root {
+  border: solid 2px #f00;
+  height: 100%;
+  position: relative;
+  /* background: rgba(255, 0, 0, 0.5); */
+}
+
+.object {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: solid 2px #f00;
+}
+
+.underlay {
+  border: solid 2px #00f;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+}
+
+.debug {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 1rem;
+  border: solid 2px #f00;
+}
+
+.debug pre {
+  margin: 0;
+}
+
+.diag {
+  transform: rotate(45deg);
+}
