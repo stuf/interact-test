@@ -1,3 +1,4 @@
+/* eslint-disable */
 import * as L from "partial.lenses";
 import { useEffect, useState } from "react";
 

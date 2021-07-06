@@ -1,5 +1,4 @@
 .root {
-  border: solid 2px #f00;
   height: 100%;
   position: relative;
   /* background: rgba(255, 0, 0, 0.5); */
@@ -9,11 +8,11 @@
   position: absolute;
   top: 0;
   left: 0;
-  border: solid 2px #f00;
+  /* border: solid 2px #f00; */
 }
 
 .underlay {
-  border: solid 2px #00f;
+  /* border: solid 2px #00f; */
   height: 100%;
   pointer-events: none;
   user-select: none;
@@ -24,7 +23,8 @@
   top: 0;
   right: 0;
   padding: 1rem;
-  border: solid 2px #f00;
+  background-color: var(--bg-inv);
+  color: var(--color-inv);
 }
 
 .debug pre {
@@ -33,4 +33,18 @@
 
 .diag {
   transform: rotate(45deg);
+}
+
+.root svg line {
+  stroke: var(--color);
+}
+
+.root svg text {
+  fill: var(--color);
+}
+
+.canvasBorder {
+  stroke: var(--color);
+  fill: none;
+  stroke-width: 2px;
 }

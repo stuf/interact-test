@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { inspect } from "util";
 import { Group } from "@visx/group";
 import { Text } from "@visx/text";
@@ -5,7 +6,7 @@ import { Text } from "@visx/text";
 import css from "./Canvas.module.css";
 import { useCanvas } from "./hooks";
 
-const { sqrt, abs, pow, sin, cos, tan, PI } = Math;
+const { sqrt, abs, pow, cos, tan } = Math;
 
 export function Canvas(props) {
   const { width, height } = props;
@@ -24,13 +25,13 @@ export function Canvas(props) {
       <div className={css.debug}>
         <pre>{inspect(asd.mouse, { depth: Infinity })}</pre>
 
-        <pre>{inspect({ width, height, hasPos, hasOrig })}</pre>
+        {/* <pre>{inspect({ width, height, hasPos, hasOrig })}</pre> */}
       </div>
 
       {Object.values(asd.objects).map((o, i) => (
         <div
           key={i}
-          className={css.object}
+          className={[css.object, "hidden"].join(" ")}
           style={{
             ...o.canvas.size,
             transform: `translateX(${o.canvas.pos.x}px) translateY(${o.canvas.pos.y}px)`,
@@ -42,20 +43,16 @@ export function Canvas(props) {
 
       <div className={css.underlay}>
         <svg {...{ width, height }}>
-          <line
-            x1={pos.x - 0.5}
-            x2={pos.x - 0.5}
-            y1={0}
-            y2={height}
-            stroke="#000"
+          <rect
+            x={margin}
+            y={margin}
+            width={width - margin * 2}
+            height={height - margin * 2}
+            className={css.canvasBorder}
           />
-          <line
-            y1={pos.y - 0.5}
-            y2={pos.y - 0.5}
-            x1={0}
-            x2={width}
-            stroke="#000"
-          />
+
+          <line x1={pos.x - 0.5} x2={pos.x - 0.5} y1={0} y2={height} />
+          <line y1={pos.y - 0.5} y2={pos.y - 0.5} x1={0} x2={width} />
 
           {hasOrig && (
             <>
@@ -65,7 +62,6 @@ export function Canvas(props) {
                 y1={0}
                 y2={height}
                 strokeDasharray="2 2"
-                stroke="#000"
               />
               <line
                 y1={orig.y - 0.5}
@@ -73,7 +69,6 @@ export function Canvas(props) {
                 x1={0}
                 x2={width}
                 strokeDasharray="2 2"
-                stroke="#000"
               />
 
               <line
@@ -82,7 +77,6 @@ export function Canvas(props) {
                 x2={pos.x}
                 y1={orig.y}
                 y2={pos.y}
-                stroke="#000"
                 strokeDasharray="2 2"
               />
 
@@ -103,7 +97,7 @@ export function Canvas(props) {
                       dx={5}
                       dy={-5}
                     >
-                      {mouse.distance.toFixed(2)} {ang}
+                      {mouse.distance.toFixed(2)}
                     </Text>
                   </Group>
                 );
