@@ -10,6 +10,7 @@ import css from "./Canvas.module.css";
 import { useCanvas } from "./hooks";
 
 const { sign, sqrt, abs, pow, sin, cos, tan, atan2, asin, PI } = Math;
+const π = Math.PI;
 
 const between = curryN(3, (a, b, x) => x >= a && x <= b);
 
@@ -38,20 +39,18 @@ export function Canvas(props) {
 
   const hyp = sqrt(adj * adj + opp * opp);
 
-  const rad = 180 / PI;
+  const rad = 180 / π;
 
   const sine = sin(opp / hyp) * rad || 0;
   const cosine = cos(adj / hyp) * rad || 0;
   const tangent = tan(opp / adj) * rad || 0;
 
-  const sineRad = sin(opp / hyp);
-
   const boundary = {
     0: 0,
-    90: PI / 2,
-    180: PI,
-    270: (3 * PI) / 2,
-    360: 2 * PI,
+    90: π / 2,
+    180: π,
+    270: (3 * π) / 2,
+    360: 2 * π,
   };
 
   const getQuad = cond([
@@ -68,21 +67,34 @@ export function Canvas(props) {
 
   const show = {
     asine: asine,
-    asineDeg: asine * (180 / PI),
+    asineDeg: asine * (180 / π),
     atan: arctan,
-    atanDeg: arctan * (180 / PI),
+    atanDeg: arctan * (180 / π),
   };
+
+  const quadMargin = margin * 4;
 
   return (
     <div className={css.root}>
+      <div className={css.brand}>
+        <header>Trigonometry Playground</header>
+
+        <ol>
+          <li>
+            Click and drag on the canvas, this draws a line between the starting
+            point and the current mouse position
+          </li>
+        </ol>
+      </div>
+
       <div className={css.angDebug}>
-        <dl>
+        <dl className={css.angDebugList}>
           <dt>delta</dt>
           <dd>
             x: {delta.x}, y: {delta.y}
           </dd>
 
-          <dt>adj</dt>
+          <dt>adjacent</dt>
           <dd>{adj}</dd>
 
           <dt>opposite</dt>
@@ -94,23 +106,11 @@ export function Canvas(props) {
           <dt>sine</dt>
           <dd>{sine.toFixed(2)}</dd>
 
-          <dt>cosine</dt>
-          <dd>{cosine.toFixed(2)}</dd>
-
-          <dt>tangent</dt>
-          <dd>{tangent.toFixed(2)}</dd>
-
           <dt>asine</dt>
           <dd>{show.asine ? show.asine.toFixed(2) : "none"}</dd>
 
           <dt>asine (deg)</dt>
           <dd>{show.asineDeg ? `${show.asineDeg.toFixed(2)}°` : "none"}</dd>
-
-          <dt>arctangent</dt>
-          <dd>{show.atan ? `${show.atan.toFixed(2)}` : "none"}</dd>
-
-          <dt>arctangent (deg)</dt>
-          <dd>{show.atanDeg ? `${show.atanDeg.toFixed(2)}°` : "none"}</dd>
 
           <dt>sign</dt>
           <dd>
@@ -120,8 +120,6 @@ export function Canvas(props) {
       </div>
       <div className={css.debug}>
         <pre>{inspect(asd.mouse, { depth: Infinity })}</pre>
-
-        {/* <pre>{inspect({ width, height, hasPos, hasOrig })}</pre> */}
       </div>
 
       {Object.values(asd.objects).map((o, i) => (
@@ -154,32 +152,24 @@ export function Canvas(props) {
 
           {hasOrig && (
             <>
-              {(() => {
-                const dx = pos.x - orig.x;
-                const dy = pos.y - orig.y;
-                const len = sqrt(dx * dx + dy * dy);
-                const ang = cos(dy / len);
-                const deg = ang * (180 / PI);
+              <Group left={orig.x} top={orig.y}>
+                <circle
+                  cx={0}
+                  cy={0}
+                  r={50}
+                  fill="none"
+                  stroke="#fff"
+                  strokeDasharray="360"
+                  strokeDashoffset={360 + show.asineDeg * posSign.y}
+                  pathLength={360}
+                  transform={`rotate(${posSign.y === 1 ? 90 : 270} 0 0)`}
+                />
 
-                return (
-                  <>
-                    <text x={pos.x} y={pos.y} dx={margin * 1} dy={margin * -1}>
-                      {dx}
-                    </text>
-                    <text x={pos.x} y={pos.y} dx={margin * -2} dy={margin * 2}>
-                      {dy}
-                    </text>
-                    {/* <text x={pos.x} y={pos.y} dx={-40} dy={-30}>
-                      {ang.toFixed(2)}; {deg.toFixed(2)}
-                    </text> */}
-                  </>
-                );
-              })(pos, orig)}
-            </>
-          )}
+                <text x={0} y={0} dx={50} dy={50} className={css.text}>
+                  {show.asineDeg.toFixed(2)}°
+                </text>
+              </Group>
 
-          {hasOrig && (
-            <>
               <circle
                 cx={orig.x}
                 cy={orig.y}
@@ -189,11 +179,25 @@ export function Canvas(props) {
                 strokeWidth={1.5}
               />
 
-              <text x={orig.x} y={orig.y} textAnchor="end" dx={-10} dy={-110}>
+              <text
+                x={orig.x}
+                y={orig.y}
+                textAnchor="end"
+                dx={-10}
+                dy={-110}
+                className={css.text}
+              >
                 origin: {orig.x}, {orig.y}
               </text>
 
-              <text x={pos.x} y={pos.y} textAnchor="start" dx={10} dy={110}>
+              <text
+                x={pos.x}
+                y={pos.y}
+                textAnchor="start"
+                dx={10}
+                dy={110}
+                className={css.text}
+              >
                 <tspan alignmentBaseline="hanging">
                   position: {pos.x}, {pos.y}
                 </tspan>
@@ -207,40 +211,89 @@ export function Canvas(props) {
                 fill="none"
                 strokeDasharray="5 5"
               />
-              <Group
-                left={orig.x - 0.5}
-                top={orig.y - 100.5}
-                className={css.quad}
-              >
-                <rect />
-                <text>Q1</text>
+
+              <Group>
+                <rect
+                  width={width - orig.x}
+                  height={orig.y}
+                  x={orig.x}
+                  y={0}
+                  className={css.quadRect}
+                  id="q1"
+                />
+                <text
+                  x={orig.x}
+                  y={orig.y}
+                  textAnchor="start"
+                  dx={quadMargin}
+                  dy={-quadMargin}
+                  className={css.quadLabel}
+                >
+                  Q1
+                </text>
               </Group>
 
-              <Group
-                left={orig.x - 100.5}
-                top={orig.y - 100.5}
-                className={css.quad}
-              >
-                <rect />
-                <text>Q2</text>
+              <Group>
+                <rect
+                  width={orig.x}
+                  height={orig.y}
+                  x={0}
+                  y={0}
+                  className={css.quadRect}
+                  id="q2"
+                />
+                <text
+                  x={orig.x}
+                  y={orig.y}
+                  textAnchor="end"
+                  dx={-quadMargin}
+                  dy={-quadMargin}
+                  className={css.quadLabel}
+                >
+                  Q2
+                </text>
               </Group>
 
-              <Group
-                left={orig.x - 100.5}
-                top={orig.y - 0.5}
-                className={css.quad}
-              >
-                <rect />
-                <text>Q3</text>
+              <Group>
+                <rect
+                  width={orig.x}
+                  height={height - orig.y}
+                  x={0}
+                  y={orig.y}
+                  className={css.quadRect}
+                  id="q3"
+                />
+                <text
+                  className={css.quadLabel}
+                  x={orig.x}
+                  y={orig.y}
+                  textAnchor="end"
+                  dx={-quadMargin}
+                  dy={quadMargin}
+                >
+                  <tspan alignmentBaseline="hanging">Q3</tspan>
+                </text>
               </Group>
 
-              <Group
-                left={orig.x - 0.5}
-                top={orig.y - 0.5}
-                className={css.quad}
-              >
-                <rect />
-                <text>Q4</text>
+              <Group>
+                <rect
+                  width={width - orig.x}
+                  height={height - orig.y}
+                  x={orig.x}
+                  y={orig.y}
+                  className={css.quadRect}
+                  id="q4"
+                />
+                <text
+                  className={css.quadLabel}
+                  x={orig.x}
+                  y={orig.y}
+                  textAnchor="start"
+                  dx={quadMargin}
+                  dy={quadMargin}
+                >
+                  <tspan alignmentBaseline="hanging">Q4</tspan>
+                </text>
               </Group>
 
               <line
@@ -280,8 +333,9 @@ export function Canvas(props) {
                       y={d.y * posSign.y}
                       dx={5}
                       dy={-5}
+                      className={css.text}
                     >
-                      {mouse.distance.toFixed(2)}
+                      {[mouse.distance.toFixed(2), "px"].join("")}
                     </Text>
                   </Group>
                 );
@@ -304,24 +358,28 @@ export function Canvas(props) {
               />
 
               <text
-                x={orig.x - margin}
-                y={orig.y - margin}
-                dx={margin * -posSign.x * 2}
-                dy={-10}
-                textAnchor="start"
+                x={orig.x + (abs(orig.x - pos.x) / 2) * posSign.x}
+                y={orig.y}
+                dy={-(margin * 2)}
+                textAnchor="middle"
+                className={css.text}
               >
-                <tspan alignmentBaseline="text-top">{pos.x - orig.x}</tspan>
+                <tspan alignmentBaseline="center">{pos.x - orig.x}px</tspan>
               </text>
 
-              <text
-                x={orig.x - margin}
-                y={orig.y - margin}
-                dx={-10}
-                dy={margin * 2}
-                textAnchor="end"
+              <Group
+                left={orig.x}
+                top={orig.y + (abs(orig.y - pos.y) / 2) * posSign.y}
               >
-                <tspan alignmentBaseline="text-bottom">{pos.y - orig.y}</tspan>
-              </text>
+                <text
+                  dy={margin * 2.5}
+                  textAnchor="middle"
+                  className={css.text}
+                  transform="rotate(90 0 0)"
+                >
+                  <tspan alignmentBaseline="center">{pos.y - orig.y}px</tspan>
+                </text>
+              </Group>
             </>
           )}
         </svg>

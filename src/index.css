@@ -45,3 +45,25 @@ code {
 .hidden {
   display: none;
 }
+
+@font-face {
+  font-family: "Routed Gothic";
+  src: url("./assets/fonts/routed-gothic.ttf");
+}
+
+@font-face {
+  font-family: "Routed Gothic";
+  font-style: italic;
+  src: url("./assets/fonts/routed-gothic-italic.ttf");
+}
+
+@font-face {
+  font-family: "Routed Gothic Wide";
+  src: url("./assets/fonts/routed-gothic-wide.ttf");
+}
+
+@font-face {
+  font-family: "Routed Gothic Wide";
+  font-style: italic;
+  src: url("./assets/fonts/routed-gothic-wide-italic.ttf");
+}

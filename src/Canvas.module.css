@@ -5,6 +5,21 @@
   user-select: none;
 }
 
+.brand {
+  position: absolute;
+  bottom: 19px;
+  left: 19px;
+  width: 30rem;
+  background: var(--bg);
+  border: solid 2px var(--color);
+  padding: 1rem;
+  font-style: italic;
+}
+
+.brand header {
+  font-size: 2rem;
+}
+
 .object {
   position: absolute;
   top: 0;
@@ -20,6 +35,7 @@
 }
 
 .debug {
+  display: none;
   position: absolute;
   top: 0;
   right: 0;
@@ -41,6 +57,10 @@
 }
 
 .root svg text {
+  /* fill: var(--color); */
+}
+
+.text {
   fill: var(--color);
 }
 
@@ -52,10 +72,10 @@
 
 .angDebug {
   position: absolute;
-  background-color: var(--bg);
-  left: var(--margin);
-  top: var(--margin);
-  padding: var(--margin);
+  /* background-color: var(--bg); */
+  left: 19px;
+  top: 19px;
+  border: solid 2px #fff;
 }
 
 .angDebug dl,
@@ -66,17 +86,30 @@
 
 .angDebug dl {
   display: grid;
-  grid-gap: var(--margin);
+  grid-gap: 2px;
   grid-template-columns: 100px 200px;
 }
 
-.quad {
-  display: none;
+.angDebug dt,
+.angDebug dd {
+  background: var(--bg);
+  padding: 0.25rem;
+  font-style: italic;
 }
 
+.angDebug dd {
+  font-family: "Routed Gothic Wide";
+}
+
+.angDebugList {
+  background: #fff;
+}
+
+/* .quad {
+  display: none;
+} */
+
 .quad rect {
-  width: 100px;
-  height: 100px;
   stroke: var(--color);
   stroke-dasharray: 5 5;
   fill: none;
@@ -87,4 +120,17 @@
   width: 100px;
   height: 100px;
   text-anchor: middle;
+}
+
+.quadLabel {
+  font-size: 3rem;
+  fill: none;
+  stroke: #fff;
+  stroke-dasharray: 1 1;
+}
+
+.quadRect {
+  fill: none;
+  stroke: #fff;
+  stroke-dasharray: 5 5;
 }
