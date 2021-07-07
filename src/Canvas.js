@@ -166,7 +166,7 @@ export function Canvas(props) {
                 />
 
                 <text x={0} y={0} dx={50} dy={50} className={css.text}>
-                  {show.asineDeg.toFixed(2)}°
+                  {(show.asineDeg || 0).toFixed(2)}°
                 </text>
               </Group>
 
