@@ -54,7 +54,7 @@ code {
 @font-face {
   font-family: "Routed Gothic";
   font-style: italic;
-  src: url("./assets/fonts/routed-gothic-italic.ttf");
+  src: url("./assets/fonts/routed-gothic-half-italic.ttf");
 }
 
 @font-face {
@@ -65,5 +65,5 @@ code {
 @font-face {
   font-family: "Routed Gothic Wide";
   font-style: italic;
-  src: url("./assets/fonts/routed-gothic-wide-italic.ttf");
+  src: url("./assets/fonts/routed-gothic-wide-half-italic.ttf");
 }
