@@ -2,6 +2,7 @@
   height: 100%;
   position: relative;
   /* background: rgba(255, 0, 0, 0.5); */
+  user-select: none;
 }
 
 .object {
@@ -47,4 +48,43 @@
   stroke: var(--color);
   fill: none;
   stroke-width: 2px;
+}
+
+.angDebug {
+  position: absolute;
+  background-color: var(--bg);
+  left: var(--margin);
+  top: var(--margin);
+  padding: var(--margin);
+}
+
+.angDebug dl,
+.angDebug dt,
+.angDebug dd {
+  margin: 0;
+}
+
+.angDebug dl {
+  display: grid;
+  grid-gap: var(--margin);
+  grid-template-columns: 100px 200px;
+}
+
+.quad {
+  display: none;
+}
+
+.quad rect {
+  width: 100px;
+  height: 100px;
+  stroke: var(--color);
+  stroke-dasharray: 5 5;
+  fill: none;
+}
+
+.quad text {
+  transform: translateX(50px) translateY(50px);
+  width: 100px;
+  height: 100px;
+  text-anchor: middle;
 }

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 const { abs, sqrt, pow } = Math;
 const { values } = Object;
 
+// #region Functions
 const getDistance = (p1, p2) => {
   const vs = [...values(p1), ...values(p2)].some((x) => x === null);
   if (vs) {
@@ -22,6 +23,18 @@ const getGenericMouseData = (e) => {
 
   return { x, y };
 };
+// #endregion
+
+export function useToolbar() {
+  const [state, setState] = useState({ select: false });
+
+  return [
+    state,
+    function useToolbar$toggle(name) {
+      setState((s) => ({ ...s, [name]: !s[name] }));
+    },
+  ];
+}
 
 /**
  *
@@ -53,8 +66,8 @@ export function useCanvas(source, objs) {
 
   const [mouse, setMouse] = useState({
     action: null,
-    pos: { x: 0, y: 0 },
-    orig: { x: null, y: null },
+    pos: { x: 900, y: 700 },
+    orig: { x: 600, y: 200 },
   });
   const [objects, setObjects] = useState({
     123: {
@@ -67,6 +80,7 @@ export function useCanvas(source, objs) {
 
   const mouseʼ = {
     ...mouse,
+    minDistance,
     distance: getDistance(mouse.orig, mouse.pos),
   };
 

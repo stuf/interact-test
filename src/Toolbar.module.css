@@ -1,0 +1,14 @@
+.root {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border: solid 2px #f00;
+  margin: 1rem 0 0 1rem;
+}
+
+.root button {
+  border: none;
+  background: var(--bg-inv);
+  color: var(--color-inv);
+  font-family: var(--font);
+}
